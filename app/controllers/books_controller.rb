@@ -19,5 +19,6 @@ class BooksController < ApplicationController
     @current_filter = SelectionByFilterService.new(params[:selection]).call
     @books_all = Book.all.count
     @categories = Category.all
+    @all = params[:category] ? nil : true
   end
 end

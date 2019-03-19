@@ -20,8 +20,9 @@
                 %p.lead.small
                   =t('homepage.book_authors')
                 .general-align
-                  %button.btn{ class: ('disabled' if book.quantity.zero?) }
-                    =t('homepage.buy_btn')
+                  = link_to book_path(book) do
+                    %button.btn{ class: ('disabled' if book.quantity.zero?) }
+                      =t('homepage.buy_btn')
     %a.left.carousel-control{href: "#slider", role: "button", 'data-slide': "prev"}
       %span.icon-prev{'aria-hidden': "true"}
       %span.sr-only
@@ -42,6 +43,7 @@
     %h3
       =t('homepage.best_sellers.title')
     .row
+      -# = render partial: '', collection: @best_sellers, as: :book
     -@best_sellers.each_with_index do |book, index|
       .col-sm-6.col-md-3
         .general-thumb-wrap
@@ -49,9 +51,9 @@
             =image_tag( book.image_name, alt: "design-book", class: "img-shadow general-thumbnail-img")
             .thumb-hover
               .general-thumb-link-wrap
-                %a.thumb-hover-link{href: "#"}
+                = link_to book_path(book), class: 'thumb-hover-link' do
                   %i.fa.fa-eye.thumb-icon{'aria-hidden': "true"}
-                %a.thumb-hover-link{href: "#"}
+                = link_to order_items_path(book_id: book.id, quantity: OrderItemDecorator::MINIMUM_QUONTITY), remote: true, method: :post, class: 'thumb-hover-link' do
                   %i.fa.fa-shopping-cart.thumb-icon
         .mb-35
           .clearfix
@@ -61,6 +63,7 @@
               = book.description.first(100)
           %span.divider-sm
           %p.lead.small
-            -book.authors.each do |author|
+            -# = book.authors_all
+            - book.authors.each do |author|
               =author.name
               %br/
